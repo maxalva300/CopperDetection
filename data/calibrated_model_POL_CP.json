@@ -1,0 +1,89 @@
+{
+    "description": "6-model copper image model for POL_CP (v7: NCP by-run saturated area model)",
+    "group": "POL_CP",
+    "status": "final_or_interrupted_best",
+    "target_percent_method": "excel_or_weight_sample",
+    "rho_copper": 8.96,
+    "rho_other_group_g_cm3": 8.297810343624999,
+    "segmentation_parameters": {
+        "green_lower": [
+            30,
+            40,
+            30
+        ],
+        "green_upper": [
+            95,
+            255,
+            255
+        ],
+        "copper_lower_a": [
+            0,
+            40,
+            45
+        ],
+        "copper_upper_a": [
+            18,
+            255,
+            255
+        ],
+        "copper_lower_b": [
+            170,
+            40,
+            45
+        ],
+        "copper_upper_b": [
+            179,
+            255,
+            255
+        ],
+        "rg_ratio": 1.1,
+        "rb_ratio": 1.0,
+        "redness_index_min": 0.0,
+        "min_copper_area_px": 0,
+        "dark_value_cutoff": 25,
+        "morph_kernel": 3,
+        "overlay_alpha": 0.7
+    },
+    "density_correction_model": {
+        "formula": "Cu_mass_pct_density = rho_cu*k*A_cu / (rho_cu*k*A_cu + rho_other*A_other) * 100",
+        "k_area_factor": 10.5531,
+        "rho_copper": 8.96,
+        "rho_other": 8.297810343624999
+    },
+    "saturated_area_model": {
+        "applies_to": "not applied",
+        "formula": "predicted_copper_mass_pct = base + (sat_max - base) * (1 - exp(-sat_k * detected_copper_area_pct))",
+        "base": null,
+        "sat_max": null,
+        "sat_k": null
+    },
+    "post_correction_model": {
+        "applies_to": "not used in v7 except identity fallback",
+        "formula": "predicted_copper_mass_pct = a * Cu_mass_pct_density + b",
+        "a": 1.0,
+        "b": 0.0
+    },
+    "mass_model": {
+        "type": "density_k",
+        "rho_copper": 8.96,
+        "rho_other": 8.297810343624999,
+        "k_area_factor": 10.5531,
+        "post_a": 1.0,
+        "post_b": 0.0,
+        "sat_base": null,
+        "sat_max": null,
+        "sat_k": null
+    },
+    "calibration_metrics": {
+        "mae_pct_points": 0.31110487628948036,
+        "rmse_pct_points": 0.43501609481722614,
+        "weighted_rmse_pct_points": 0.4544086986533068,
+        "bias_pct_points": -0.02366917640205557,
+        "r2": 0.28599218676483973,
+        "mean_overprediction_pct_points": 0.2874356998874248,
+        "density_only_mae_pct_points": 0.31110487628948036,
+        "density_only_rmse_pct_points": 0.43501609481722614,
+        "density_only_bias_pct_points": -0.02366917640205557,
+        "density_only_mean_overprediction_pct_points": 0.2874356998874248
+    }
+}

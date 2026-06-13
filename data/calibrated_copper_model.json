@@ -1,0 +1,56 @@
+{
+    "description": "Hand-sort calibrated copper image analysis model",
+    "input_folder": "C:\\Users\\sagit\\OneDrive - University of Oulu and Oamk\\Project Study 2026\\Code 21-5\\Image Takes",
+    "parameters_file": "C:\\Users\\sagit\\OneDrive - University of Oulu and Oamk\\Project Study 2026\\Code 21-5\\Parameters.xlsx",
+    "target_percent_method": "excel_or_weight_sample",
+    "segmentation_parameters": {
+        "green_lower": [
+            30,
+            40,
+            30
+        ],
+        "green_upper": [
+            95,
+            255,
+            255
+        ],
+        "copper_lower_a": [
+            0,
+            40,
+            45
+        ],
+        "copper_upper_a": [
+            14,
+            255,
+            255
+        ],
+        "copper_lower_b": [
+            170,
+            40,
+            45
+        ],
+        "copper_upper_b": [
+            179,
+            255,
+            255
+        ],
+        "rg_ratio": 1.0,
+        "rb_ratio": 1.0,
+        "min_copper_area_px": 0,
+        "dark_value_cutoff": 25,
+        "morph_kernel": 3,
+        "overlay_alpha": 0.7
+    },
+    "linear_correction_model": {
+        "formula": "predicted_copper_mass_pct = a * detected_copper_area_pct + b",
+        "a": 1.294075265071667,
+        "b": 31.18263332683455
+    },
+    "calibration_metrics": {
+        "mae_pct_points": 3.6519845194439338,
+        "rmse_pct_points": 4.835994650333739,
+        "bias_pct_points": -0.40519112961658843,
+        "r2": 0.9593641563579358
+    },
+    "calibration_status": "interrupted_by_user_partial_model"
+}
