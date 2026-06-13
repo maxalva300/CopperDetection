@@ -17,7 +17,7 @@ from copper_core import (
     load_model,
     save_uploaded_image,
 )
-from database import insert_calibration_record, export_records_to_excel, fetch_all_records
+from database import insert_calibration_record, export_records_to_excel, fetch_all_records, count_records
 from model_updater import recalibrate_global_model, apply_dynamic_global_correction
 def detect_group_from_filename(filename: str) -> str:
     name = filename.upper()
@@ -554,12 +554,16 @@ def save_calibration_data(n_clicks, comparison_data):
             "validated": 0,
         }
 
+
         record_id = insert_calibration_record(record)
+        total_records = count_records()
 
         return html.Div(
             [
-                html.Div(f"Calibration record saved successfully. Record ID: {record_id}", className="status-success"),
-                html.Div("The data is now stored in calibration_data.db.", className="status-muted"),
+                html.Div("Calibration record saved successfully.", className="status-success"),
+                html.Div(f"Record ID: {record_id}", className="status-muted"),
+                html.Div(f"Total records in database: {total_records}", className="status-muted"),
+                html.Div("The data is now stored in the calibration database.", className="status-muted"),
             ]
         )
 
