@@ -108,6 +108,7 @@ def init_db():
     with ENGINE.begin() as conn:
         conn.execute(text(create_table_sql))
 
+
 def insert_calibration_record(record: dict[str, Any]) -> int:
     init_db()
 
@@ -119,6 +120,24 @@ def insert_calibration_record(record: dict[str, Any]) -> int:
     placeholders = ", ".join([f":{col}" for col in columns])
     column_names = ", ".join(columns)
 
+    db_url = get_database_url()
+
+    # PostgreSQL supports RETURNING id.
+    if not db_url.startswith("sqlite"):
+        query = text(
+            f"""
+            INSERT INTO calibration_records ({column_names})
+            VALUES ({placeholders})
+            RETURNING id
+            """
+        )
+
+        with ENGINE.begin() as conn:
+            result = conn.execute(query, record)
+            new_id = result.scalar_one()
+            return int(new_id)
+
+    # SQLite version.
     query = text(
         f"""
         INSERT INTO calibration_records ({column_names})
@@ -135,7 +154,6 @@ def insert_calibration_record(record: dict[str, Any]) -> int:
             row = conn.execute(text("SELECT MAX(id) FROM calibration_records")).fetchone()
             return int(row[0]) if row and row[0] is not None else -1
 
-
 def fetch_all_records() -> pd.DataFrame:
     init_db()
 
@@ -147,6 +165,13 @@ def fetch_all_records() -> pd.DataFrame:
 
     return df
 
+def count_records() -> int:
+    init_db()
+
+    with ENGINE.connect() as conn:
+        row = conn.execute(text("SELECT COUNT(*) FROM calibration_records")).fetchone()
+
+    return int(row[0]) if row and row[0] is not None else 0
 
 def export_records_to_excel(output_path: str | Path) -> Path:
     output_path = Path(output_path)
